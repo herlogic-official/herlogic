@@ -261,6 +261,8 @@
         border-radius: 12px;
         max-width: 540px;
         width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
         padding: 32px 28px;
         text-align: center;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
@@ -409,24 +411,30 @@
     </div>
 </div>
 
-<!-- High-Converting Access Granted Modal -->
+<!-- High-Converting Access Granted Modal (Pure High-Trust Gift) -->
 <div id="successModal" class="modal-overlay">
     <div class="modal-card">
-        <div style="font-size: 44px; margin-bottom: 10px;">🛡️</div>
+        <div style="font-size: 44px; margin-bottom: 12px;">🛡️</div>
         <h2 class="modal-title">ACCESS GRANTED</h2>
         <p class="modal-desc">
             Your <strong>Unshakeable Man Executive Master Suite</strong> has been dispatched to: <br>
             <span id="userEmailDisplay" style="color: #FFEB0A; font-weight: 700; font-size: 16px;"></span>
         </p>
+
+        <a href="https://drive.google.com/uc?export=download&id=1Po79TQ6ksCbXEBvUnFeDjUhzibN72D1r" class="modal-btn" target="_blank" rel="noopener" style="margin-bottom: 20px;">
+            📥 Instant Access: Download Master Monograph (PDF) &rarr;
+        </a>
+
         <div class="modal-step-box">
             <div style="color: #D4AF37; font-weight: 700; margin-bottom: 6px;">⚠️ CRITICAL INBOX WHITELIST STEP:</div>
             1. Open your inbox (or Promotions/Spam tab if first time).<br>
             2. Find Sofia's email: <em>'Your Executive Master Suite'</em>.<br>
             3. Hit <strong>Reply</strong> and type <strong style="color: #FFEB0A;">RECEIVED</strong> to ensure future Sunday dispatches reach your Primary inbox.
         </div>
-        <a href="https://drive.google.com/uc?export=download&id=1Po79TQ6ksCbXEBvUnFeDjUhzibN72D1r" class="modal-btn" target="_blank" rel="noopener">
-            📥 Instant Access: Download Master Monograph (PDF) &rarr;
-        </a>
+
+        <button onclick="document.getElementById('successModal').style.display='none'" style="background: none; border: none; color: #64748B; font-size: 13px; text-decoration: underline; cursor: pointer;">
+            Close this window
+        </button>
     </div>
 </div>
 
@@ -444,47 +452,21 @@ function handleOptin(e) {
 
     document.getElementById('userEmailDisplay').textContent = email;
 
-    // Decode Brevo credentials dynamically
-    var _k = atob("eGtleXNpYi1iYmRjZWEzNjI0NThhNDhkMDAxYjM4OTAwMGVmODBiOGRiMWRlN2RkMGQ4ZTIyODI0NTkwM2QzOGI2MTZmMjhiLUh6dW1YekhoZ1prYmVZZnM=");
+    // 31/10/2026: KHONG con API key trong trang. Gui email qua FORM Brevo (sibforms) -> Brevo Automation gui email 1.
+    var FORM_URL = "https://adca2588.sibforms.com/serve/MUIFAKJkiA8c8B1DUc0jIvm9_02424Ct1kopZ2GrwtZjkvMeqxtovuUI0KlaoLLYs-BuuOuFQvXEe2JSjNhJaKsI0RzpgEkdCXWD2_eg6A_sxUZfxqM1a2rHehUU7XF4yzIU7EqH9nsiGFyO5NkB-FqOXHU5HOZjNb4ugw8mbklZ9UlaGsmJQc5dHw08fmqFYAPb40pQJBRUuMcplw"; // vd: https://xxxx.sibforms.com/serve/MUIF...
+    var fd = new FormData();
+    fd.append('EMAIL', email);
+    fd.append('email_address_check', '');
+    fd.append('locale', 'en');
+    var sendPromise = (FORM_URL.indexOf('sibforms.com') > 0)
+        ? fetch(FORM_URL, { method: 'POST', body: fd, mode: 'no-cors' })
+        : Promise.resolve();
 
-    // 1. Send Email 1 Template Immediately (24/7 Cloud Dispatch)
-    var sendPromise = fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-            'api-key': _k,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            templateId: 1,
-            to: [{ email: email }]
-        })
-    });
-
-    // 2. Sync Contact to Brevo List ID 5
-    var contactPromise = fetch('https://api.brevo.com/v3/contacts', {
-        method: 'POST',
-        headers: {
-            'api-key': _k,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email,
-            listIds: [5],
-            updateEnabled: true
-        })
-    });
-
-    Promise.allSettled([sendPromise, contactPromise]).then(function(results) {
+    Promise.allSettled([sendPromise]).then(function(results) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;
         document.getElementById('successModal').style.display = 'flex';
         emailInput.value = '';
-    }).catch(function(err) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
-        document.getElementById('successModal').style.display = 'flex';
     });
 
     return false;
