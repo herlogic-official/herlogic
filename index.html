@@ -453,7 +453,7 @@ function handleOptin(e) {
     document.getElementById('userEmailDisplay').textContent = email;
 
     // 31/10/2026: KHONG con API key trong trang. Gui email qua FORM Brevo (sibforms) -> Brevo Automation gui email 1.
-    var FORM_URL = "https://adca2588.sibforms.com/serve/MUIFAKJkiA8c8B1DUc0jIvm9_02424Ct1kopZ2GrwtZjkvMeqxtovuUI0KlaoLLYs-BuuOuFQvXEe2JSjNhJaKsI0RzpgEkdCXWD2_eg6A_sxUZfxqM1a2rHehUU7XF4yzIU7EqH9nsiGFyO5NkB-FqOXHU5HOZjNb4ugw8mbklZ9UlaGsmJQc5dHw08fmqFYAPb40pQJBRUuMcplw"; // vd: https://xxxx.sibforms.com/serve/MUIF...
+    var FORM_URL = "https://adca2588.sibforms.com/serve/MUIFAKJkiA8c8B1DUc0jIvm9_02424Ct1kopZ2GrwtZjkvMeqxtovuUI0KlaoLLYs-BuuOuFQvXEe2JSjNhJaKsI0RzpgEkdCXWD2_eg6A_sxUZfxqM1a2rHehUU7XF4yzIU7EqH9nsiGFyO5NkB-FqOXHU5HOZjNb4ugw8mbklZ9UlaGsmJQc5dHw08fmqFYAPb40pQJBRUuMcplw=="; // vd: https://xxxx.sibforms.com/serve/MUIF...
     var fd = new FormData();
     fd.append('EMAIL', email);
     fd.append('email_address_check', '');
